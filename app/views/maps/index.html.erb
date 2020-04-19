@@ -1,0 +1,50 @@
+<h2>imap</h2>
+
+<input id="address" type="textbox" value="">
+<input type="button" value="検索" onclick="codeAddress()">
+<div id="display">検索してみましょう</div>
+<div id='map'></div>
+
+<style>
+#map {
+  height: 600px;
+  width: 600px;
+}
+</style>
+
+<script>
+let map
+
+function initMap(){
+  geocoder = new google.maps.Geocoder()
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 36, lng:138},
+    zoom: 4.8,
+  });
+}
+
+let geocoder
+const display = document.getElementById('display')
+
+function codeAddress(){
+  let inputAddress = document.getElementById('address').value;
+
+  geocoder.geocode( { 'address': inputAddress}, function(results, status) {
+    if (status == 'OK') {
+      for (var i = 0; i < results.length; i ++) {
+        map.setCenter(results[i].geometry.location);
+        map.zoom = 15;
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[i].geometry.location
+      });
+      display.textContent = "該当検索結果：" + results.length　+ "件"
+      }
+    } else {
+      alert('該当する結果がありませんでした');
+    }
+  });
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDW4Ms7egxp_y2B-tyH9fYL2lMlwY6IuM&callback=initMap" async defer></script>
