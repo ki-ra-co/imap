@@ -1,15 +1,16 @@
 <h2>imap</h2>
 
-<select name="都道府県">
+<select name="都道府県" id="address">
   <% @contents.each do|c| %>
-      <option value=<%=c%>><%= c %></option>
+    <option value=<%=c%>><%= c %></option>
   <%end%>
+  <input type="button" value="検索" onclick="codeAddress()">
+  <div id="display">検索してみましょう</div>
+  <div id='map'></div>
 </select>
 
-<input id="address" type="textbox" value="">
-<input type="button" value="検索" onclick="codeAddress()">
-<div id="display">検索してみましょう</div>
-<div id='map'></div>
+
+
 <style>
 #map {
   height: 600px;
@@ -38,13 +39,13 @@ function codeAddress(){
   geocoder.geocode( { 'address': inputAddress}, function(results, status) {
     if (status == 'OK') {
       for (var i = 0; i < results.length; i ++) {
+        map.zoom = 9;
         map.setCenter(results[i].geometry.location);
-        map.zoom = 15;
         var marker = new google.maps.Marker({
             map: map,
-            position: results[i].geometry.location
+            position: results[0].geometry.location
       });
-      display.textContent = "該当検索結果：" + results.length　+ "件"
+      display.textContent = "検索地域：" + document.getElementById('address').value　
       }
     } else {
       alert('該当する結果がありませんでした');
