@@ -1,10 +1,15 @@
 <h2>imap</h2>
 
+<select name="都道府県">
+  <% @contents.each do|c| %>
+      <option value=<%=c%>><%= c %></option>
+  <%end%>
+</select>
+
 <input id="address" type="textbox" value="">
 <input type="button" value="検索" onclick="codeAddress()">
 <div id="display">検索してみましょう</div>
 <div id='map'></div>
-
 <style>
 #map {
   height: 600px;
